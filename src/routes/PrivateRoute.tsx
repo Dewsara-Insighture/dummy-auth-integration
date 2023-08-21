@@ -18,7 +18,7 @@ export default function PrivateRoutes() {
       />
       <Route
         key="dashboard"
-        path="/dashboard/"
+        path="/dashboard/*"
         element={
           <AuthWrapper>
             <Dashboard />
