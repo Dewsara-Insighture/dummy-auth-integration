@@ -1,12 +1,12 @@
 import { Button, Grid, Stack } from '@mui/material';
-import { Auth } from 'aws-amplify';
+//import { Auth } from 'aws-amplify';
 import { useEffect } from 'react';
 
 
 export default function Dashboard() {
   const handleSignOut = async () =>{
     try {
-      await Auth.signOut();
+      //await Auth.signOut();
     } catch (error) {
       console.log('error signing out: ', error);
     }
