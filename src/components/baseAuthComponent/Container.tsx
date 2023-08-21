@@ -31,7 +31,7 @@ export default function Container(children : PropsWithChildren) {
   return(
     <>
       {children}
-        <h2>Stil in the container</h2>
+        <h2>Stil in the container console</h2>
     </>
   )
 
