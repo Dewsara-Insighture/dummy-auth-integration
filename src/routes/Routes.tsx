@@ -20,7 +20,7 @@ export default function AppRoutes() {
         />
         <Route
           key="dashboard"
-          path="/dashboard"
+          path="/dashboard/*"
           element={<Dashboard />}
         />
         {/* <Route
