@@ -2,7 +2,7 @@ import { Auth } from 'aws-amplify';
 import { useEffect , useState} from 'react';
 import { useNavigate,  Route, Routes , Navigate } from 'react-router-dom';
 import {PropsWithChildren} from 'react'
-import Container from '../components/baseAuthComponent/Container';
+//import Container from '../components/baseAuthComponent/Container';
 
 export default function AuthWrapper({children} :PropsWithChildren){
     const [user , setUser] = useState<object>({});
@@ -39,7 +39,7 @@ export default function AuthWrapper({children} :PropsWithChildren){
             element={(
               <>
                 {user ? (
-                  <Container />
+                  <p>just a test</p>
                 ) : (
                   <Navigate to="/login"  />
                 )}
