@@ -24,6 +24,8 @@ export default function AuthWrapper({children} :PropsWithChildren){
             }
           })
           .catch((err) => {
+            console.log(children);
+            
            console.log('error:- ' , err);
            navigate('/login');
           });
