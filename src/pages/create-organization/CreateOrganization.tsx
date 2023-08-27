@@ -2,9 +2,12 @@ import { Button, Grid, Stack, Box, TextField } from '@mui/material';
 import { useEffect } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { organizationType } from '../../types/organization.types';
+import { useNavigate } from 'react-router-dom';
+import { ResourceService } from '../../api/api';
 
 
 export default function CreateOrganization() {
+  const navigate = useNavigate();
   const { control, handleSubmit } = useForm<organizationType>({
     defaultValues: {
       orgName: '',
@@ -13,7 +16,22 @@ export default function CreateOrganization() {
       orgCountry: '',
     },
   });
-  const onSubmit: SubmitHandler<organizationType> = (data) => {
+  const onSubmit: SubmitHandler<organizationType> = async (data) => {
+    try{
+      const createOrgRes:organizationType = await ResourceService.post('/organizations');
+      if(createOrgRes){
+        navigate('/invite-members');
+      }else{
+        console.log('Issue in Org creation.')
+      }
+  
+    }catch(error){
+      // Should handle this and not console it.
+      navigate('/invite-members') 
+      console.log('Create Organization Error:- ', error)
+    }
+    
+   
     console.log(data);
   };
 
@@ -71,7 +89,7 @@ export default function CreateOrganization() {
               <TextField
                 {...field}
                 id="standard-basic"
-                label="Password"
+                label="Domain"
                 variant="standard"
                 type="text"
                 fullWidth
@@ -85,7 +103,7 @@ export default function CreateOrganization() {
               <TextField
                 {...field}
                 id="standard-basic"
-                label="Password"
+                label="Country"
                 variant="standard"
                 type="text"
                 fullWidth
