@@ -5,5 +5,5 @@ export const AuthService = axios.create({
 });
 
 export const ResourceService = axios.create({
-    baseURL : import.meta.env.VITE_RESOURCE_SERVICE
+    baseURL : import.meta.env.VITE_RESOURCE_SERIVE
 })

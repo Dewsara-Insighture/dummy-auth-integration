@@ -23,7 +23,7 @@ export default function InviteMembers() {
     try{
       const accessToken = await getUserAccessToken();
       const inviteUserRes = await AuthService.post('/users/invite',{members}  , {headers : {
-        'x-org-id' : 'dummyvalue',
+        'x-organization-id' : 'dummyvalue',
         Autherization : `Bearer ${accessToken}`
       }});
       console.log('inviteUserRes: - ' , inviteUserRes);

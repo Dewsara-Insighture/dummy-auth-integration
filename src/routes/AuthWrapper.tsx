@@ -5,7 +5,7 @@ import { PropsWithChildren } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Container from '../components/baseAuthComponent/Container';
 import { AuthService } from '../api/api';
-import { organizationType } from '../types/organization.types';
+// import { organizationType } from '../types/organization.types';
 
 export default function AuthWrapper({ children }: PropsWithChildren) {
   //const TRUE_CONST: boolean = true;
@@ -18,15 +18,14 @@ export default function AuthWrapper({ children }: PropsWithChildren) {
     const authUser = async () => {
       try{
         const authenticated = await Auth.currentAuthenticatedUser({bypassCache : true});
-        if(authenticated){
-          console.log('hiting Container if:- ', authenticated.signInUserSession.accessToken.jwtToken);
-          
-          const onboardingOrgs : organizationType = await AuthService.get('/users/orgData',{headers:{Authorization : `Bearer ${authenticated.signInUserSession.accessToken.jwtToken}`}});
-          if(onboardingOrgs){
-            setIsOnboarded(true);
+        if(authenticated){          
+          const onboardingOrgs = await AuthService.get('/users/orgData',{headers:{Authorization : `Bearer ${authenticated.signInUserSession.accessToken.jwtToken}`}});
+          console.log('Onboarding Data :- ' , onboardingOrgs)
+          if(onboardingOrgs?.data?.data?.orgData && onboardingOrgs?.data?.data?.orgData.length === 0){
+            setIsOnboarded(false);
           }else{
             //This as a jump over. Not actually a good thing to do. 
-            setIsOnboarded(false);
+            setIsOnboarded(true);
           }
           setLoading(false);
           setUserData(authenticated);
@@ -67,8 +66,7 @@ export default function AuthWrapper({ children }: PropsWithChildren) {
                 ) : userData && isOnboarded === false ? (
                   <>
                     {console.log(
-                      'hit create-organization :-0 ',
-                      userData && isOnboarded === false
+                      `hit create-organization :- ${ userData && isOnboarded === false} & isOnboarded(${isOnboarded})`
                     )}
                     <Navigate to="/create-organization" />
                   </>

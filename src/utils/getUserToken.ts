@@ -19,3 +19,13 @@ export const getUserIdToken = async () : Promise<string | null> =>{
 
     return userIdToken;
 }
+
+export const getUserId = async () : Promise<string | null> =>{
+    let userIdToken : string | null = null;
+    const authenticatedUser = await Auth.currentAuthenticatedUser();
+    if(authenticatedUser ){
+        userIdToken = authenticatedUser.signInUserSession.IdToken.jwtToken;
+    }
+
+    return userIdToken;
+}

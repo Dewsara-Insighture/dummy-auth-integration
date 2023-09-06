@@ -4,7 +4,7 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { organizationType } from '../../types/organization.types';
 import { useNavigate } from 'react-router-dom';
 import { ResourceService } from '../../api/api';
-
+import { getUserAccessToken } from '../../utils/getUserToken';
 
 export default function CreateOrganization() {
   const navigate = useNavigate();
@@ -18,8 +18,22 @@ export default function CreateOrganization() {
   });
   const onSubmit: SubmitHandler<organizationType> = async (data) => {
     try{
-      const createOrgRes:organizationType = await ResourceService.post('/organizations');
-      if(createOrgRes){
+      const accessToken = await getUserAccessToken();
+      // These two has to be mapped with types. 
+      const requestBody = {
+        name : data.orgName,
+        address : 'ddddddd',
+        country : data.orgCountry,
+        createdBy : 'Dewsara',
+        createdAt : new Date(Date.now()).toISOString()
+      }
+
+      const createOrgRes = await ResourceService.post('/organizations', requestBody, {headers : {
+        Authorization : `Bearer ${accessToken}`
+      }});
+      
+      if(createOrgRes.status >= 200 && createOrgRes.status <= 300){
+        console.log('create org Hitting this ');
         navigate('/invite-members');
       }else{
         console.log('Issue in Org creation.')
@@ -27,7 +41,6 @@ export default function CreateOrganization() {
   
     }catch(error){
       // Should handle this and not console it.
-      navigate('/invite-members') 
       console.log('Create Organization Error:- ', error)
     }
     

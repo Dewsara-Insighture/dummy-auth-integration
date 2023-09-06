@@ -4,3 +4,7 @@ export interface organizationType {
     orgDomain?: string;
     orgCountry?: string;
 }
+
+export interface getOrganizationResponseType {
+    
+}
