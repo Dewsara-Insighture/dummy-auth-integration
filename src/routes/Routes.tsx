@@ -6,16 +6,16 @@ import Dashboard from '../pages/dashboard/Dashboard';
 import ConfirmInvitation from '../pages/confirm-invitation/ConfirmInvitation';
 //import Container from '../components/baseAuthComponent/Container';
 import SignIn from '../pages/auth/SignIn';
-import AuthWrapper from './AuthWrapper';
+// import AuthWrapper from './AuthWrapper';
 import CreateOrganization from '../pages/create-organization/CreateOrganization';
 import InviteMembers from '../pages/invite-members/InviteMembers';
+import ProtectedRoutes from './ProtectedRoutes';
 
 export default function AppRoutes() {
   return (
     <>
       <Routes>
-        {/* <Route path="/" element={<Container />} /> */}
-        <Route path="/login" element={<SignIn />} />
+        {/* <Route path="/login" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route
           key="confirm-invitation"
@@ -53,7 +53,29 @@ export default function AppRoutes() {
 
         <Route path="/404" element={<ErrorPage404 />} />
         <Route path="/" element={<Navigate to="/dashboard" />} />
-        <Route path="/*" element={<Navigate to="/404" />} />
+        <Route path="/*" element={<Navigate to="/404" />} /> */}
+        <Route path="login" element={<SignIn />} />
+        <Route path="signup" element={<SignUp />} />
+        <Route
+          key="confirm-invitation"
+          path="confirm-invitation"
+          element={<ConfirmInvitation />}
+        />
+        {/*   START =  Initial Method but the this page didn't load     */}
+        <Route
+          path="create-organization"
+          element={<ProtectedRoutes component={<CreateOrganization />} />}
+        />
+        {/*    END = Initial Method but the this page didn't load     */}
+
+        <Route path="/" element={<ProtectedRoutes />}>
+          <Route path="create-organization" element={<CreateOrganization />} />
+          <Route path="invite-members" element={<InviteMembers />} />
+          <Route path="dashboard/*" element={<Dashboard />} />
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+        </Route>
+
+        <Route path="*" element={<ErrorPage404 />} />
       </Routes>
     </>
   );
