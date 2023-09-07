@@ -10,6 +10,7 @@ import SignIn from '../pages/auth/SignIn';
 import CreateOrganization from '../pages/create-organization/CreateOrganization';
 import InviteMembers from '../pages/invite-members/InviteMembers';
 import ProtectedRoutes from './ProtectedRoutes';
+import OnBoardedRoutes from './OnBoardedRoutes';
 
 export default function AppRoutes() {
   return (
@@ -61,18 +62,15 @@ export default function AppRoutes() {
           path="confirm-invitation"
           element={<ConfirmInvitation />}
         />
-        {/*   START =  Initial Method but the this page didn't load     */}
-        <Route
-          path="create-organization"
-          element={<ProtectedRoutes component={<CreateOrganization />} />}
-        />
-        {/*    END = Initial Method but the this page didn't load     */}
 
         <Route path="/" element={<ProtectedRoutes />}>
           <Route path="create-organization" element={<CreateOrganization />} />
           <Route path="invite-members" element={<InviteMembers />} />
-          <Route path="dashboard/*" element={<Dashboard />} />
-          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/" element={<OnBoardedRoutes />}>
+            <Route path="dashboard/*" element={<Dashboard />} />
+            <Route path="/" element={<Navigate to="dashboard" />} />
+          </Route>
+          
         </Route>
 
         <Route path="*" element={<ErrorPage404 />} />

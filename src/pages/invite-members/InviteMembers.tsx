@@ -1,33 +1,34 @@
-import { Button, Grid, Stack, Box, TextField } from '@mui/material';
+import { Button, Grid, Stack, Box, TextField , FormControl, InputLabel, MenuItem, Select} from '@mui/material';
 import { useEffect , useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { memberType } from '../../types/member.types';
 import { AuthService } from '../../api/api';
 import { useNavigate } from 'react-router-dom';
 import { getUserAccessToken } from '../../utils/getUserToken';
+import { getRoleResponseType } from '../../types/roles.types';
 
 
 
 export default function InviteMembers() {
   const navigate = useNavigate();
-  const [roles , setRoles] = useState<object[] >([]);
+  const [roles , setRoles] = useState<getRoleResponseType[] | null>();
   const [members , setMembers] = useState<{email : string , orgRoleIds:string[]}[] | null>([]);
   const { control, handleSubmit } = useForm<memberType>({
     defaultValues: {
       email: '',
-      role: '',
+      role: [],
     },
   });
 
   const handleInviteMembers = async () => {
     try{
       const accessToken = await getUserAccessToken();
-      const inviteUserRes = await AuthService.post('/users/invite',{members}  , {headers : {
-        'x-organization-id' : 'dummyvalue',
-        Autherization : `Bearer ${accessToken}`
+      const inviteUserRes = await AuthService.post('/users/invite',members , {headers : {
+        'x-organization-id' : 'org_d1457da7-f3bc-452b-9c82-bcb1685f7617',
+        Authorization : `Bearer ${accessToken}`
       }});
       console.log('inviteUserRes: - ' , inviteUserRes);
-      if(inviteUserRes.data.statusCode === 200){
+      if(inviteUserRes.status === 200){
         
         navigate('/dashboard');
       }
@@ -36,9 +37,10 @@ export default function InviteMembers() {
     }
   }
   const onSubmit: SubmitHandler<memberType> = async (data) => {
+    console.log('Data :- ' , data)
       const postInviteUserData = {
         email : data.email,
-        orgRoleIds : [data.role]
+        orgRoleIds : data.role
       };
 
       setMembers((prevMembers) => (prevMembers ? [...prevMembers, postInviteUserData] : [postInviteUserData]));
@@ -50,10 +52,10 @@ export default function InviteMembers() {
       try{
         const getRolesRes = await AuthService.get('/roles/', );
         console.log('Get Roles Res: - ' , getRolesRes);
-        if(getRolesRes.data.statusCode === 200){
+        if(getRolesRes.status === 200){
           setRoles(getRolesRes.data.data);
         }else{
-          setRoles([]);
+          setRoles(null);
         }
       }catch(error){
         console.log('Get Roles error :- ' , error)
@@ -97,15 +99,22 @@ export default function InviteMembers() {
             name="role"
             control={control}
             render={({ field }) => (
-              <TextField
+              <FormControl sx={{width : '50%'}}>
+              <InputLabel id="role">Roles</InputLabel>
+              <Select
                 {...field}
-                id="standard-basic"
-                label="Member Role"
-                variant="standard"
-                type="text"
-                value = {roles[0]}
-                fullWidth
-              />
+                labelId="role"
+                label="role"
+                multiple
+                defaultValue={[]}
+              >
+                {roles && roles.length>0 && roles.map((role) => (
+                  <MenuItem value={role.id} key={role.id}>
+                    {role.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             )}
           />
           <Button
