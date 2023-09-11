@@ -52,7 +52,7 @@ export default function SignIn() {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  id="standard-basic"
+                  id="signin-email"
                   label="Email"
                   variant="standard"
                   type="email"
@@ -66,7 +66,7 @@ export default function SignIn() {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  id="standard-basic"
+                  id="signin-password"
                   label="Password"
                   variant="standard"
                   type="password"
