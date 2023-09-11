@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { getUserAccessToken } from '../utils/getUserToken';
 import { AuthService } from '../api/api';
@@ -50,15 +50,8 @@ export default function OnBoardedRoutes() {
   }, [pathname]);
 
   if (isLoading) {
-    // You can render a loading indicator here if needed
     return <p>Loading...</p>;
   }
-
-  //   if (!hasCompletedSteps) {
-  //     return <Navigate to="/create-organization" replace />;
-  //   } else {
-  //     return <Outlet />;
-  //   }
 
   return hasCompletedSteps ? (
     <Outlet />
